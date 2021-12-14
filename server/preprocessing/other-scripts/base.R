@@ -76,6 +76,13 @@ get_papers <- function(query, params, limit=100,
   sortby_string = ifelse(params$sorting == "most-recent", "dcyear desc", "")
 
   base_query <- paste(paste0("(",exact_query,")") ,lang_query, date_string, document_types, collapse=" ")
+  
+  if (!is.null(params$subset)) {
+    subset_fields <- c("dctitle", "dcdescription", "dcsubject")
+    subset_query <- paste0("(", paste(params$subset, collapse=" OR "), ")")
+    expansion <- paste(apply(expand.grid(subset_fields, subset_query), 1, paste, collapse=":"), collapse=" OR ")
+    base_query <- paste(base_query, expansion)
+  }
 
   min_descsize <- if (is.null(params$min_descsize)) 300 else params$min_descsize
   filter <- I(paste0('descsize:[', min_descsize, '%20TO%20*]'))
