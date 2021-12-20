@@ -99,7 +99,7 @@ get_papers <- function(query, params, limit=100,
   # execute search
   (res_raw <- bs_search(hits=limit
                         , query = base_query
-                        , fields = "dcdocid,dctitle,dcdescription,dcsource,dcdate,dcsubject,dccreator,dclink,dcoa,dcidentifier,dcrelation,dctype,dctypenorm"
+                        , fields = "dcdocid,dctitle,dcdescription,dcsource,dcdate,dcsubject,dccreator,dclink,dcoa,dcidentifier,dcrelation,dctype,dctypenorm,dcdeweyfull,dcdeweyhuns,dcdeweytens,dcdeweyones,dcautoclasscode,dcclasscode"
                         , sortby = sortby_string
                         , filter = filter
                         , target = repo
