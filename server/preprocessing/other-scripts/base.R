@@ -82,7 +82,7 @@ get_papers <- function(query, params, limit=100,
   for (ef in expansion_fields) {
     base_field <- map_basefields(ef)
     if (!is.null(params[[ef]])) {
-      expansion_terms <- unlist(strsplit(params[[ef]], ",", fixed=TRUE))
+      expansion_terms <- unlist(strsplit(unescape_html(params[[ef]]), ",", fixed=TRUE))
       expansion_terms <- unlist(lapply(expansion_terms, function(x){
         x <- trimws(x)
         x <- if (grepl(" ", x)) paste0("(", x, ")") else x
