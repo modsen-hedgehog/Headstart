@@ -78,23 +78,16 @@ get_papers <- function(query, params, limit=100,
   base_query <- paste(paste0("(",exact_query,")") ,lang_query, date_string, document_types, collapse=" ")
   
   expansion_fields <- c("title", "abstract", "keywords")
-  all_expansions = list()
   for (ef in expansion_fields) {
     base_field <- map_basefields(ef)
     if (!is.null(params[[ef]])) {
-      expansion_terms <- unlist(strsplit(unescape_html(params[[ef]]), ",", fixed=TRUE))
-      expansion_terms <- unlist(lapply(expansion_terms, function(x){
-        x <- trimws(x)
-        x <- if (grepl(" ", x)) paste0("(", x, ")") else x
-      }))
-      expansion_terms <- paste(apply(expand.grid(base_field, expansion_terms), 1, paste, collapse=":"), collapse=" OR ")
-      all_expansions <- c(all_expansions, expansion_terms)
+      expansion_terms <- unescape_html(params[[ef]])
+      expansion_terms <- tolower(sanitize_query(expansion_terms)$sanitized_query)
+      expansion_terms <- trimws(expansion_terms)
+      expansion_terms <- paste(base_field, expansion_terms, sep=":")
+      expansion_terms <- paste0("(", expansion_terms, ")")
+      base_query <- paste(base_query, expansion_terms)
     }
-  }
-  if (length(all_expansions)>0) {
-    all_expansions <- paste(all_expansions, collapse=" OR ")
-    all_expansions <- paste0("(", all_expansions, ")")
-    base_query <- paste(base_query, "AND", all_expansions)
   }
 
   min_descsize <- if (is.null(params$min_descsize)) 300 else params$min_descsize
@@ -217,8 +210,9 @@ map_basefields <- function(field) {
 }
 
 dc_fieldmapper <- list(
-  "abstract"="description",
-  "keywords"="subject"
+  "abstract"="dcdescription",
+  "keywords"="dcsubject",
+  "title"="dctitle"
 )
 
 valid_langs <- list(
