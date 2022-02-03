@@ -58,19 +58,19 @@ conditional_lowercase <- function(text, lang) {
 }
 
 setup_logging <- function(loglevel) {
-  # checks if LOGFILE is defined,
+  # checks if HEADSTART_LOGFILE is defined,
   # if not logs to console only
-  if (Sys.getenv("LOGFILE") == ""){
+  if (Sys.getenv("HEADSTART_LOGFILE") == ""){
     getLogger(loglevel)
     removeHandler('basic.stdout')
     addHandler(writeToConsole)
   } else {
-    if (!file.exists(Sys.getenv("LOGFILE"))) {
-      file.create(Sys.getenv("LOGFILE"))
+    if (!file.exists(Sys.getenv("HEADSTART_LOGFILE"))) {
+      file.create(Sys.getenv("HEADSTART_LOGFILE"))
     }
     getLogger(loglevel)
     removeHandler('basic.stdout')
-    addHandler(writeToFile, file=Sys.getenv("LOGFILE"))
+    addHandler(writeToFile, file=Sys.getenv("HEADSTART_LOGFILE"))
   }
 }
 

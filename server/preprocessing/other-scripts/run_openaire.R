@@ -14,7 +14,7 @@ Sys.setlocale(category="LC_ALL", locale = "en_US.UTF-8")
 library(jsonlite)
 library(logging)
 source('utils.R')
-if (Sys.getenv("LOGLEVEL") == "DEBUG") {
+if (Sys.getenv("OPENAIRE_LOGLEVEL") == "DEBUG") {
   DEBUG <- FALSE
 } else {
   DEBUG <- TRUE

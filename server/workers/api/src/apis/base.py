@@ -1,19 +1,32 @@
 import os
 import json
 import uuid
+import time
+import redis
+import asyncio
+import aioredis
 import pandas as pd
 
-from flask import request, make_response, jsonify, abort
+from flask import Blueprint, request, make_response, jsonify, abort
 from flask_restx import Namespace, Resource, fields
 from .request_validators import SearchParamSchema
-from apis.utils import get_key, redis_store
+from apis.utils import get_key
 
 
 base_ns = Namespace("base", description="BASE API operations")
+
+redis_config = {
+    "host": os.getenv("REDIS_HOST"),
+    "port": os.getenv("REDIS_PORT"),
+    "db": os.getenv("REDIS_DB"),
+    "password": os.getenv("REDIS_PASSWORD")
+}
+redis_store = redis.StrictRedis(**redis_config)
+
 search_param_schema = SearchParamSchema()
 
 
-base_querymodel = base_ns.model("SearchQuery",
+search_query = base_ns.model("SearchQuery",
                                {"q": fields.String(example='feminicide',
                                                    description='query string',
                                                    required=True),
@@ -31,7 +44,6 @@ base_querymodel = base_ns.model("SearchQuery",
                                                           required=True),
                                 "limit": fields.Integer(example=100,
                                                         description='max. number of results'),
-                                "list_size": fields.Integer(),
                                 "language": fields.String(example='en',
                                                           description='language code, optional',
                                                           required=False),
@@ -43,7 +55,7 @@ base_querymodel = base_ns.model("SearchQuery",
 class Search(Resource):
     @base_ns.doc(responses={200: 'OK',
                               400: 'Invalid search parameters'})
-    @base_ns.expect(base_querymodel)
+    @base_ns.expect(search_query)
     @base_ns.produces(["application/json", "text/csv"])
     def post(self):
         """

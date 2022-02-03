@@ -18,7 +18,6 @@ dist/
 .Rhistory
 .ipynb_checkpoints
 .Rprofile
-.Rproj*
 coverage/
 
 # local deployment files
@@ -35,4 +34,3 @@ coverage/
 /lc_cache.json
 /linkedcat.sqlite
 .env
-.Rproj.user
