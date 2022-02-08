@@ -74,4 +74,4 @@ if (!exists('output_json')) {
   output_json <- detect_error(failed, service)
 }
 
-#print(output_json)
+print(output_json)
