@@ -1,11 +1,15 @@
-FROM python:3.6.10-slim
+FROM python:3.7-slim
+# FROM python:3.6.10-slim
 
 MAINTAINER Chris Kittel "christopher.kittel@openknowledgemaps.org"
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends gcc git python3-dev
-RUN apt-get install -y libpq-dev
+#RUN apt-get update
+#RUN apt-get install -y --no-install-recommends gcc git python3-dev
+#RUN apt-get install -y libpq-dev
 
 WORKDIR /app
-RUN pip install git+https://github.com/python-restx/flask-restx
-RUN pip install pytest requests sqlalchemy sqlalchemy-utils psycopg2-binary
+COPY . .
+# RUN #pip install git+https://github.com/python-restx/flask-restx
+# RUN #pip install pytest==6.2.5 requests sqlalchemy sqlalchemy-utils psycopg2-binary
+# RUN #pip list
+RUN pip install -r requirements.txt

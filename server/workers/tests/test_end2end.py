@@ -5,6 +5,7 @@ from workers.tests.mock_app import create_app
 from sqlalchemy import create_engine, inspect
 from sqlalchemy_utils import database_exists, create_database, drop_database
 from workers.persistence.src.models import Base
+import time
 
 @pytest.fixture
 def app():
