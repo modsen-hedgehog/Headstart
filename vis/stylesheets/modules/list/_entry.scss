@@ -909,3 +909,13 @@ img#preview_page {
         color: #cc3b6b;
     }
 }
+
+.coordinates {
+    font-size: 12px;
+    font-family: $link-font-family;
+    font-weight: $fontweight400;
+    color: $list_detail;
+    // padding: 0;
+    // padding-right: 10px;
+    margin-bottom: 10px;
+}

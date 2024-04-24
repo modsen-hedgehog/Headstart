@@ -18,6 +18,7 @@ import Keywords from "./Keywords";
 import Link from "./Link";
 import Metrics from "./Metrics";
 import Title from "./Title";
+import Coordinates from "./Coordinates";
 
 /**
  * Standard list entry template used in project website, CoVis and Viper.
@@ -69,6 +70,7 @@ const StandardListEntry = ({
         {showDocumentType && paper.resulttype.length > 0 && (
           <DocumentType type={paper.resulttype[0]} />
         )}
+        <Coordinates x={paper.x} y={paper.y} />
         <Abstract text={paper.paper_abstract} />
         {paper.comments.length > 0 && <Comments items={paper.comments} />}
         {showKeywords && <Keywords>{paper.keywords}</Keywords>}
